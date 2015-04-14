@@ -123,7 +123,7 @@ angular.module('ivh.treeview').directive('ivhTreeviewNode', ['ivhTreeviewCompile
         '</div>',
         '<ul ng-if="getChildren().length" class="ivh-treeview">',
           '<li ng-repeat="child in getChildren()"',
-              'ng-hide="ctrl.hasFilter() && !ctrl.isVisible(child)"',
+              'ng-hide="!ctrl.isVisible(child) || (ctrl.hasFilter() && !ctrl.matchesFilter(child))"',
               'ng-class="{\'ivh-treeview-node-collapsed\': !ctrl.isExpanded(child) && !ctrl.isLeaf(child)}"',
               'ivh-treeview-node="child"',
               'ivh-treeview-depth="childDepth">',
@@ -356,11 +356,19 @@ angular.module('ivh.treeview').directive('ivhTreeview', ['ivhTreeviewMgr', funct
       };
 
       ctrl.isVisible = function(node) {
-        var filter = ctrl.getFilter();
-        if(!filter) {
-          return true;
+        if (node[localOpts.visibleAttribute] === false) {
+          return false;
         }
-        return !!filterFilter([node], filter).length;
+        return true;
+      };
+
+      ctrl.matchesFilter = function(node)
+      {
+          var filter = ctrl.getFilter();
+          if(!filter) {
+            return true;
+          }
+          return !!filterFilter([node], filter).length;
       };
 
       ctrl.useCheckboxes = function() {
@@ -413,7 +421,7 @@ angular.module('ivh.treeview').directive('ivhTreeview', ['ivhTreeviewMgr', funct
     template: [
       '<ul class="ivh-treeview">',
         '<li ng-repeat="child in root | ivhTreeviewAsArray"',
-            'ng-hide="ctrl.hasFilter() && !ctrl.isVisible(child)"',
+            'ng-hide="!ctrl.isVisible(child) || (ctrl.hasFilter() && !ctrl.matchesFilter(child))"',
             'ng-class="{\'ivh-treeview-node-collapsed\': !ctrl.isExpanded(child) && !ctrl.isLeaf(child)}"',
             'ivh-treeview-node="child"',
             'ivh-treeview-depth="0">',
@@ -1082,7 +1090,12 @@ angular.module('ivh.treeview').provider('ivhTreeviewOptions', function() {
     /**
      * Template for leaf twisties (i.e. no children)
      */
-    twistieLeafTpl: 'o'
+    twistieLeafTpl: 'o',
+
+    /**
+     * Whether or not hide this item
+     */
+    visibleAttribute: 'visible'
 
   };
 

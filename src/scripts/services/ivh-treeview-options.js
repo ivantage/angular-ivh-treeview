@@ -84,7 +84,12 @@ angular.module('ivh.treeview').provider('ivhTreeviewOptions', function() {
     /**
      * Template for leaf twisties (i.e. no children)
      */
-    twistieLeafTpl: 'o'
+    twistieLeafTpl: 'o',
+
+    /**
+     * Whether or not hide this item
+     */
+    visibleAttribute: 'visible'
 
   };
 
