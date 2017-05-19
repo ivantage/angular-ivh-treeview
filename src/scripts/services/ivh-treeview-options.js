@@ -60,6 +60,16 @@ angular.module('ivh.treeview').provider('ivhTreeviewOptions', [
     validate: true,
 
     /**
+     * Whether or not directive should validate parent state on change
+     */
+    validateParents: true,
+
+    /**
+     * Whether or not directive should select children recursively when a parent is selected
+     */
+    recursiveSelection: true,
+
+    /**
      * Collection item attribute to track intermediate states
      */
     indeterminateAttribute: '__ivhTreeviewIndeterminate',

@@ -129,8 +129,14 @@ angular.module('ivh.treeview')
             makeSelected.bind(opts) :
             makeDeselected.bind(opts);
 
-          ivhTreeviewBfs(n, opts, cb);
-          ng.forEach(p, validateParent.bind(opts));
+          if(opts.recursiveSelection) {
+            ivhTreeviewBfs(n, opts, cb);
+          } else {
+            cb(n);
+          }
+          if(opts.validateParents) {
+            ng.forEach(p, validateParent.bind(opts));
+          }
         }
 
         return proceed;

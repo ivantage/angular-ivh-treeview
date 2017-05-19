@@ -43,6 +43,8 @@ angular.module('ivh.treeview').directive('ivhTreeview', ['ivhTreeviewMgr', funct
       twistieLeafTpl: '=ivhTreeviewTwistieLeafTpl',
       useCheckboxes: '=ivhTreeviewUseCheckboxes',
       validate: '=ivhTreeviewValidate',
+      validateParents: '=ivhTreeviewValidateParents',
+      recursiveSelection: '=ivhTreeviewRecursiveSelection',
       visibleAttribute: '=ivhTreeviewVisibleAttribute',
 
       // Generic options object
@@ -77,6 +79,8 @@ angular.module('ivh.treeview').directive('ivhTreeview', ['ivhTreeviewMgr', funct
         'twistieLeafTpl',
         'useCheckboxes',
         'validate',
+        'validateParents',
+        'recursiveSelection',
         'visibleAttribute'
       ], function(attr) {
         if(ng.isDefined($scope[attr])) {
@@ -255,8 +259,8 @@ angular.module('ivh.treeview').directive('ivhTreeview', ['ivhTreeviewMgr', funct
        * @param {Object} node The node to select or deselect
        * @param {Boolean} isSelected Defaults to `true`
        */
-      trvw.select = function(node, isSelected) {
-        ivhTreeviewMgr.select($scope.root, node, localOpts, isSelected);
+      trvw.select = function(node, isSelected, eventOpts) {
+        ivhTreeviewMgr.select($scope.root, node, ng.extend({}, localOpts, eventOpts), isSelected);
         trvw.onCbChange(node, isSelected);
       };
 
